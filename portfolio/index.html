@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0b10">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Portfolio of Dan Demuel G. Villaceran, Aspiring Software Engineer.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Dan Demuel G. Villaceran – Aspiring Software Engineer">
+    <meta property="og:description" content="Projects, achievements, skills and ways to get in touch.">
+    <title>Dan Demuel G. Villaceran – Aspiring Software Engineer</title>
+
+    <!-- Set the theme before first paint so there is no flash -->
+    <script>
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('theme'); } catch (e) { }
+            if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            document.documentElement.dataset.theme = t;
+            document.documentElement.classList.add('js');
+
+            /* LOADING SCREEN: set to false to show it only once per browser session */
+            var SHOW_LOADER_EVERY_VISIT = true;
+            var seen = false;
+            try { seen = sessionStorage.getItem('seenLoader') === '1'; } catch (e) { }
+            if (SHOW_LOADER_EVERY_VISIT || !seen) document.documentElement.classList.add('loading');
+        })();
+    </script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script>
+        /* Colors use rgb(var(--x) / <alpha-value>) so classes like bg-bg/70 and text-acc/80 work */
+        const c = n => `rgb(var(--${n}) / <alpha-value>)`;
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { bg: c('bg'), fg: c('fg'), mut: c('mut'), line: c('line'), card: c('card'), card2: c('card2'), acc: c('acc'), a2: c('a2'), a3: c('a3'), a4: c('a4') },
+                    fontFamily: {
+                        d: ['Unbounded', 'Arial Black', 'sans-serif'],
+                        b: ['Hanken Grotesk', 'system-ui', 'sans-serif'],
+                        m: ['JetBrains Mono', 'ui-monospace', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="font-b">
+    <noscript>
+        <p style="padding:16px;text-align:center;background:#222;color:#fff">This portfolio needs JavaScript to show its
+            content. Please enable it and reload.</p>
+    </noscript>
+
+    <!-- LOADING SCREEN: an ID badge gets "issued", scanned, then the screen opens (click to skip) -->
+    <div id="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+        <div class="ld-pane ld-top"></div>
+        <div class="ld-pane ld-bot"></div>
+        <div class="ld-core">
+            <div class="ld-card">
+                <div class="ld-hole"></div>
+                <div class="ld-photo">
+                    <span class="ld-ini" aria-hidden="true">DV</span>
+                    <img src="images/img1.jpg" alt="" onerror="this.remove()">
+                    <i class="ld-scan" aria-hidden="true"></i>
+                </div>
+                <p class="ld-name">Dan Demuel G. Villaceran</p>
+                <p class="ld-role">Aspiring Software Engineer · ID 2600195</p>
+                <div id="ldcode" class="ld-barcode" aria-hidden="true"></div>
+                <span class="ld-stamp" aria-hidden="true">ACCESS GRANTED</span>
+            </div>
+            <ul class="ld-log" aria-hidden="true">
+                <li class="on">verifying identity</li>
+                <li>loading projects</li>
+                <li>compiling skills</li>
+                <li>opening portfolio</li>
+            </ul>
+            <div class="ld-bar" aria-hidden="true"><i id="ldbar"></i></div>
+            <p class="ld-pct"><span><span id="ldpct">0</span>%</span><span></span></p>
+        </div>
+    </div>
+
+    <a href="#main" class="skip">Skip to content</a>
+    <div id="progress" aria-hidden="true"></div>
+    <div class="aurora" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+
+    <!-- NAVBAR -->
+    <header id="hdr" class="fixed left-0 right-0 z-20" style="top:calc(env(safe-area-inset-top, 0px) + 12px)">
+        <nav class="wrap flex items-center justify-between gap-3" aria-label="Main">
+            <a href="#home"
+                class="logo flex items-center rounded-full border border-line bg-bg/70 px-4 py-2 backdrop-blur"
+                aria-label="DANSIO – back to top">
+                <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="font-d text-sm">DANSIO</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <div id="navpill"
+                    class="navpill relative hidden rounded-full border border-line bg-bg/70 p-1 text-sm backdrop-blur sm:block">
+                    <span id="navind" class="nav-ind" aria-hidden="true"></span>
+                    <ul class="flex gap-1">
+                        <li><a data-nav href="#home" class="navlink block rounded-full px-3 py-1.5">Home</a></li>
+                        <li><a data-nav href="#about" class="navlink block rounded-full px-3 py-1.5">About</a></li>
+                        <li><a data-nav href="#portfolio" class="navlink block rounded-full px-3 py-1.5">Portfolio</a>
+                        </li>
+                        <li><a data-nav href="#contact" class="navlink block rounded-full px-3 py-1.5">Contact</a></li>
+                    </ul>
+                </div>
+                <a href="#contact" class="nav-cta">Let's talk
+                    <svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                </a>
+                <button id="theme-toggle" aria-label="Switch to light theme"
+                    class="rounded-full border border-line bg-card p-2.5 transition-colors hover:border-acc">
+                    <svg id="theme-icon" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        aria-hidden="true"></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Phone navigation: bottom bar with icons (the top pill hides below 640px) -->
+    <nav id="mnav" class="mnav sm:hidden" aria-label="Sections">
+        <span id="mind" class="m-ind" aria-hidden="true"></span>
+        <a data-nav href="#home" class="mlink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 11 12 4l8 7" />
+                <path d="M6 10v9a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-9" />
+            </svg>
+            <span>Home</span></a>
+        <a data-nav href="#about" class="mlink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+            <span>About</span></a>
+        <a data-nav href="#portfolio" class="mlink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="7" width="18" height="13" rx="2" />
+                <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18" />
+            </svg>
+            <span>Work</span></a>
+        <a data-nav href="#contact" class="mlink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 7 9 6 9-6" />
+            </svg>
+            <span>Contact</span></a>
+    </nav>
+
+    <button id="btt" class="btt" aria-label="Back to top" type="button">
+        <svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg>
+    </button>
+
+    <main id="main">
+        <!-- HOME -->
+        <section id="home" class="wrap relative grid min-h-svh items-center gap-6 pt-24 md:grid-cols-[1.2fr_1fr]">
+            <div class="rv">
+                <p class="mb-5 inline-flex items-center gap-3 text-sm text-mut"><span class="pulse"></span>Open to
+                    full-time and freelance work</p>
+                <p class="mb-3 font-m text-sm text-mut">Hi, I'm <span class="text-fg">Dan Demuel</span> &mdash;</p>
+                <h1 class="h-hero font-d font-bold">Aspiring<br><span class="grad">Software Engineer</span></h1>
+                <p class="mt-5 font-m text-sm text-mut"><span class="text-acc">&gt;</span> I build <span id="typed"
+                        class="text-fg"></span><span class="caret" aria-hidden="true"></span></p>
+                <p class="mt-5 max-w-md text-mut">Expert at staring at code until it magically works.</p>
+                <div class="mt-6 flex flex-wrap gap-2">
+                    <span class="chip"><i class="dot" style="--c:#e34f26"></i>HTML</span>
+                    <span class="chip"><i class="dot" style="--c:#38bdf8"></i>Tailwind CSS</span>
+                    <span class="chip"><i class="dot" style="--c:#f7df1e"></i>JavaScript</span>
+                </div>
+                <div class="mt-8 flex flex-wrap items-center gap-3">
+                    <a href="#portfolio" data-tab="projects" class="cta cta-solid">View projects</a>
+                    <a href="#contact" class="cta cta-line">Get in touch</a>
+                    <a id="cv" href="#" class="cta cta-line" download hidden>
+                        <svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />
+                        </svg>
+                        Download CV</a>
+                </div>
+                <div id="hsocial" class="mt-6 flex flex-wrap gap-2" hidden></div>
+            </div>
+
+            <div class="lanyard relative w-full self-stretch md:-mt-24" aria-label="Draggable ID badge">
+                <div id="swing" class="swing">
+                    <div id="strap" class="strap mx-auto" aria-hidden="true"></div>
+                    <div id="clip" class="clip mx-auto"></div>
+                    <div id="badge" class="mx-auto rounded-2xl border border-line p-3">
+                        <div class="mx-auto mb-3 h-2 w-16 rounded-full bg-bg"></div>
+                        <div class="photo aspect-square overflow-hidden rounded-xl">
+                            <img src="images/img1.jpg" alt="Dan Demuel G. Villaceran" draggable="false"
+                                class="h-full w-full object-cover object-top" onerror="this.style.display='none'">
+                        </div>
+                        <p class="mt-3 font-d text-base">Dan Demuel G. Villaceran</p>
+                        <p class="text-xs text-mut">Aspiring Software Engineer · ID 2600195</p>
+                    </div>
+                </div>
+                <span id="pivot" class="pivot" aria-hidden="true"></span>
+                <p id="hint" class="hint" aria-hidden="true"></p>
+            </div>
+
+            <a href="#about" id="cue" class="scroll-cue" aria-label="">
+                <span class="" aria-hidden="true"><i></i></span>
+            </a>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="wrap py-20 sm:py-24">
+            <div class="grid items-center gap-10 md:grid-cols-[1.3fr_1fr]">
+                <div class="rv">
+                    <p class="eyebrow">About me</p>
+                    <h2 class="font-d text-3xl font-bold leading-tight sm:text-4xl">Dan Demuel G. Villaceran</h2>
+                    <p class="mt-5 max-w-xl text-mut">I am an Information Technology student and aspiring software
+                        engineer focused on frontend development and modern UI. I love turning rough ideas
+                        into digital products that load fast, read clearly, and feel good to use.</p>
+                    <p class="mt-5 max-w-xl border-l-2 border-acc pl-4 italic">Turning ideas into clean, modern, and
+                        meaningful digital experiences.</p>
+                </div>
+                <div class="rv order-first mx-auto h-48 w-48 overflow-hidden rounded-full border border-line sm:h-56 sm:w-56 md:order-none"
+                    style="background:linear-gradient(135deg,rgb(var(--acc)/.5),rgb(var(--a2)/.5),rgb(var(--a4)/.5))">
+                    <img src="images/img2.jpg" alt="" class="h-full w-full object-cover"
+                        onerror="this.style.display='none'">
+                </div>
+            </div>
+            <div id="stats" class="mt-12 grid grid-cols-3 gap-2 sm:gap-3"></div>
+
+            <div class="mt-16 grid gap-10 md:grid-cols-2 md:gap-6">
+                <div class="rv">
+                    <h3 class="mb-4 font-d text-lg">Education</h3>
+                    <ol class="tl">
+                        <li>
+                            <p class="font-semibold">B.S. Information Technology</p>
+                            <p class="text-sm text-mut">Cebu Eastern College Incorporated · 2026 – 2027</p>
+                        </li>
+                        <li>
+                            <p class="font-semibold">Senior High School, ABM</p>
+                            <p class="text-sm text-mut">Basak Community School · 2021 – 2022</p>
+                        </li>
+                        <li>
+                            <p class="font-semibold">Elementary</p>
+                            <p class="text-sm text-mut">Basak Community School · 2009 – 2010</p>
+                        </li>
+                    </ol>
+                </div>
+                <div class="rv">
+                    <h3 class="mb-4 font-d text-lg">Experience</h3>
+                    <ol class="tl">
+                        <li>
+                            <p class="font-semibold">Freelance Web Designer</p>
+                            <p class="text-sm text-mut">Self-employed · 2024 – now</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="panel rv mt-10 flex flex-wrap items-center gap-2 p-5">
+                <span class="mr-2 font-semibold">Outside of code</span>
+                <span class="chip"><i class="dot" style="--c:rgb(var(--acc))"></i>Gaming</span>
+                <span class="chip"><i class="dot" style="--c:rgb(var(--a4))"></i>Playing Sports</span>
+                <span class="chip"><i class="dot" style="--c:rgb(var(--a2))"></i>Relapse</span>
+                <span class="chip"><i class="dot" style="--c:rgb(var(--a3))"></i>Movies/Series</span>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio" class="wrap py-20 sm:py-24">
+            <div class="rv text-center">
+                <p class="eyebrow">Portfolio</p>
+                <h2 class="font-d text-3xl font-bold sm:text-4xl">Portfolio showcase</h2>
+                <p class="mx-auto mt-3 max-w-md text-mut">Projects, certificates, and the tools I work
+                    with.</p>
+                <div id="tablist" role="tablist" aria-label="Portfolio categories"
+                    class="relative mx-auto mt-8 flex max-w-md rounded-full border border-line bg-card p-1 text-sm">
+                    <span id="tabind" class="tab-ind" aria-hidden="true"></span>
+                    <button role="tab" id="t-projects" aria-selected="true" aria-controls="pane"
+                        class="tab flex-1 rounded-full py-2">Projects</button>
+                    <button role="tab" id="t-certs" aria-selected="false" aria-controls="pane" tabindex="-1"
+                        class="tab flex-1 rounded-full py-2">Achievement</button>
+                    <button role="tab" id="t-stack" aria-selected="false" aria-controls="pane" tabindex="-1"
+                        class="tab flex-1 rounded-full py-2">Tech stack</button>
+                </div>
+            </div>
+            <div id="pane" role="tabpanel" class="mt-10"></div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="wrap py-20 sm:py-24">
+            <div class="rv mb-10 text-center">
+                <p class="eyebrow">Contact</p>
+                <h2 class="font-d text-3xl font-bold sm:text-4xl">Let's work together</h2>
+                <p class="mx-auto mt-3 max-w-md text-mut">Have something in mind? Send me a message and I'll get back to
+                    you personally.</p>
+            </div>
+            <div class="grid gap-5 lg:grid-cols-[.85fr_1.15fr]">
+                <aside class="panel cside rv p-6 sm:p-8">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <span class="eyebrow !mb-0">Get in touch</span>
+                        <span id="cavail" class="status-pill" hidden><span class="pulse"></span>Open to work</span>
+                    </div>
+                    <h3 class="mt-5 font-d text-2xl">Contact me</h3>
+                    <p class="mt-2 text-sm text-mut">Reach out to collaborate or just say hello.</p>
+                    <p id="creply" class="reply mt-4"></p>
+                    <div id="cquick" class="cq mt-6" hidden></div>
+                    <ol class="steps mt-8" aria-label="What happens next">
+                        <li><span><b>You send a message</b>Pick a topic and tell me what you have in mind.</span></li>
+                        <li><span><b>I read it personally</b>No bots, no auto-replies.</span></li>
+                        <li><span><b>We take it from there</b>I'll answer by email as soon as I can.</span></li>
+                    </ol>
+                    <div id="csocials" class="mt-8 flex flex-wrap gap-2 text-sm" hidden></div>
+                </aside>
+                <div class="panel rv p-6 sm:p-8" id="contact-card">
+                    <form id="cform" class="space-y-4" novalidate>
+                        <div>
+                            <h3 class="font-d text-xl">Send a message</h3>
+                            <p class="mt-1 text-sm text-mut">It only takes a minute. All fields are required.</p>
+                        </div>
+                        <fieldset>
+                            <legend class="mb-2 text-sm font-semibold">What's it about?</legend>
+                            <div id="ctopics" class="flex flex-wrap gap-2"></div>
+                        </fieldset>
+
+                        <div>
+                            <label for="c-name" class="mb-1 block text-sm font-semibold">Your name</label>
+                            <input id="c-name" name="name" class="field" placeholder="e.g. Maria Santos"
+                                autocomplete="name" maxlength="60" required aria-describedby="e-name">
+                            <p id="e-name" class="err" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="c-email" class="mb-1 block text-sm font-semibold">Your email</label>
+                            <input id="c-email" name="email" type="email" class="field" placeholder="you@example.com"
+                                autocomplete="email" inputmode="email" maxlength="120" required
+                                aria-describedby="e-email">
+                            <p id="e-email" class="err" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="c-message" class="mb-1 block text-sm font-semibold">Your message</label>
+                            <textarea id="c-message" name="message" rows="5" class="field"
+                                placeholder="Tell me a little about what you have in mind…" maxlength="1000" required
+                                aria-describedby="e-message"></textarea>
+                            <div class="mt-1 flex items-start justify-between gap-3">
+                                <p id="e-message" class="err" role="alert"></p>
+                                <span id="c-count" class="ml-auto text-xs text-mut">0 / 1000</span>
+                            </div>
+                        </div>
+
+                        <!-- hidden trap for spam bots; real visitors never see it -->
+                        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+                            aria-hidden="true">
+
+                        <button id="csend" type="submit" class="btn-send">Send message <svg class="ci"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg></button>
+                        <p id="cmsg" role="status" aria-live="polite"></p>
+                    </form>
+
+                    <!-- thank-you state -->
+                    <div id="cdone" class="cdone" hidden tabindex="-1">
+                        <span class="cdone-ico"><svg viewBox="0 0 24 24" width="28" height="28" fill="none"
+                                stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="m5 12 5 5L20 7" />
+                            </svg></span>
+                        <h3 class="font-d text-lg">Thank you<span id="cdone-name"></span>!</h3>
+                        <p class="mt-2 text-sm text-mut">Your message is on its way. I'll reply to <strong
+                                id="cdone-mail" class="break-all text-fg"></strong> as soon as I can.</p>
+                        <button id="cagain" type="button" class="btn ghost mt-5 text-sm">Send another message</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="site-footer">
+        <div class="wrap py-12 sm:py-16">
+            <!-- call to action band -->
+            <div class="foot-cta rv">
+                <div>
+                    <h2 class="font-d text-2xl font-bold leading-tight sm:text-3xl">Have a project in mind?</h2>
+                    <p class="mt-2 max-w-md text-mut">I'm open to full-time roles and freelance work. Let's build
+                        something great together.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <a href="#contact" class="cta cta-solid">Start a conversation
+                        <svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.3fr] lg:gap-8">
+                <div>
+                    <a href="#home" class="logo inline-flex items-center" aria-label="DANSIO – back to top">
+                        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                        <span class="font-d text-base">DANSIO</span>
+                    </a>
+                    <p class="mt-3 max-w-xs text-sm text-mut">Aspiring Software Engineer building clean, fast and
+                        friendly
+                        interfaces.</p>
+                    <p class="status-pill mt-4"><span class="pulse"></span>Open to work</p>
+                    <ul id="finfo" class="mt-4 space-y-1 text-sm text-mut" hidden></ul>
+                </div>
+
+                <nav aria-label="Footer">
+                    <h3 class="foot-h">Explore</h3>
+                    <ul class="space-y-1">
+                        <li><a class="flink" href="#home">Home</a></li>
+                        <li><a class="flink" href="#about">About</a></li>
+                        <li><a class="flink" href="#portfolio">Portfolio</a></li>
+                        <li><a class="flink" href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <nav aria-label="Portfolio sections">
+                    <h3 class="foot-h">Portfolio</h3>
+                    <ul class="space-y-1">
+                        <li><a class="flink" href="#portfolio" data-tab="projects">Projects</a></li>
+                        <li><a class="flink" href="#portfolio" data-tab="certs">Achievements</a></li>
+                        <li><a class="flink" href="#portfolio" data-tab="stack">Tech stack</a></li>
+                    </ul>
+                </nav>
+
+                <div>
+                    <h3 class="foot-h">Connect</h3>
+                    <ul id="fsocial" class="space-y-1"></ul>
+                </div>
+            </div>
+
+            <div class="foot-bottom">
+                <p>© <span id="yr">2026</span> Dan Demuel G. Villaceran. All rights reserved.</p>
+
+                <a href="#home" class="foot-top">Back to top
+                    <svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 19V5M5 12l7-7 7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <dialog id="dlg" aria-labelledby="dt">
+        <div class="titlebar">
+            <span class="d r"></span><span class="d y"></span><span class="d g"></span>
+            <span id="dbar" class="t">project</span>
+            <button id="dx"
+                class="rounded-full border border-line px-3 py-1 transition-colors hover:border-acc">Close</button>
+        </div>
+
+        <!-- screenshot gallery -->
+        <div class="gal">
+            <div id="gmain" class="gmain"></div>
+            <button id="gprev" class="g-btn g-prev" aria-label="Previous screenshot">‹</button>
+            <button id="gnext" class="g-btn g-next" aria-label="Next screenshot">›</button>
+            <span id="gcount" class="g-count"></span>
+        </div>
+        <div id="gthumbs" class="gthumbs"></div>
+
+        <div class="p-5 sm:p-6">
+            <p id="dmeta" class="font-m text-xs uppercase tracking-widest text-acc"></p>
+            <h3 id="dt" class="mt-2 font-d text-lg sm:text-xl"></h3>
+
+            <p class="mt-5 font-semibold">About this project</p>
+            <p id="dd" class="mt-2 text-mut"></p>
+
+            <div id="dfeat-box" hidden>
+                <p class="mt-5 font-semibold">Key features</p>
+                <ul id="dfeat" class="mt-2 list-disc space-y-1 pl-5 text-sm text-mut"></ul>
+            </div>
+
+            <p class="mt-5 font-semibold">Languages &amp; tools used</p>
+            <div id="dtech" class="mt-2 flex flex-wrap gap-2"></div>
+        </div>
+    </dialog>
+
+    <!-- IMAGE VIEWER (opens when you click an achievement picture, project screenshot or work sample) -->
+    <dialog id="lb" aria-label="Image viewer">
+        <div class="lb-stage">
+            <button id="lbx" class="lb-btn lb-close" aria-label="Close viewer">✕</button>
+            <button id="lbp" class="lb-btn lb-prev" aria-label="Previous image">‹</button>
+            <button id="lbn" class="lb-btn lb-next" aria-label="Next image">›</button>
+            <figure class="lb-fig">
+                <img id="lbimg" alt="" draggable="false">
+                <video id="lbvid" controls playsinline hidden></video>
+                <figcaption>
+                    <strong id="lbt"></strong>
+                    <span id="lbs"></span>
+                    <span id="lbc" class="lb-count"></span>
+                </figcaption>
+            </figure>
+        </div>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
